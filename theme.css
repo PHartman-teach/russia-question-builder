@@ -1,0 +1,65 @@
+
+:root{--blue:#284968;--light:#eff4f9;--ink:#172e43;--line:#cbd5df;--accent:#b57344}*{box-sizing:border-box}body{font:16px/1.48 system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;background:#f6f8fb;color:var(--ink)}.wrap{max-width:940px;margin:auto;padding:20px}.head{background:var(--blue);color:white;border-radius:15px;padding:22px 25px;margin-bottom:16px}.head h1{margin:0 0 6px;font-size:1.7rem}.head p{margin:0;color:#dbe6f1}.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}h2{margin:0 0 14px;font-size:1.2rem}h3{font-size:1rem;margin:0 0 8px}.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:6px}label{font-weight:700;font-size:.92rem}select,textarea{font:inherit;color:var(--ink);border:1px solid #9eb1c0;border-radius:8px;padding:10px;background:white;width:100%}select:focus,textarea:focus,button:focus-visible{outline:3px solid #79a7cc;outline-offset:2px}.full{grid-column:1/-1}.chiprow{display:flex;flex-wrap:wrap;gap:6px}.chip{background:#e5edf6;color:#254d75;border-radius:25px;padding:4px 10px;font-weight:700;font-size:.78rem}.question{border-left:5px solid var(--accent);background:#faf6f1;padding:18px;border-radius:8px;font-size:1.2rem;font-weight:700}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}button{font:inherit;font-weight:700;border:0;border-radius:8px;background:var(--blue);color:white;padding:10px 14px;cursor:pointer}button.secondary{background:#e9eef4;color:var(--ink)}.muted{font-size:.9rem;color:#4e6171}.hint{padding:12px;border-radius:9px;background:var(--light);margin-top:13px}textarea{min-height:100px;resize:vertical}.foot{font-size:.82rem;color:#506373;padding:8px 2px 20px}@media(max-width:630px){.cols{grid-template-columns:1fr}.wrap{padding:10px}.head{padding:16px}.panel{padding:14px}}
+.featurelist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0}.feature{font-size:.88rem;padding:8px 10px;background:#eff4f9;border:1px solid #d7e2ed;border-radius:7px}.feature.active{background:#d9eddf;border-color:#71a487;font-weight:700}.pastmatch{padding:12px 14px;margin-top:12px;border-radius:9px;border:1px solid #d7e2ed;background:#f5f9fc}.pastmatch h3{margin:0 0 5px}.pastmatch p{margin:4px 0}.pastmatch .pastquote{font-size:.94rem;margin-top:8px;border-left:3px solid #90a9be;padding-left:9px}.pastmatch .source{font-size:.83rem;color:#47617a}.lucky{background:#8c4a29}.smallnote{font-size:.84rem;color:#526475}.plan-grid{display:grid;grid-template-columns:1fr;gap:12px}.plan{border:1px solid #cbd5df;border-radius:10px;padding:15px;background:#fcfdff}.plan h3{color:#284968;font-size:1.08rem}.plan ol{padding-left:22px}.plan li{margin:9px 0}.plan .evidence{display:block;font-size:.87rem;color:#485d70;margin-top:3px}.pill{display:inline-block;font-size:.75rem;border-radius:99px;background:#e9edf4;padding:3px 8px;font-weight:700}.plan-actions{display:flex;justify-content:flex-end;margin-top:10px}.feature-note{border-left:4px solid #648b72;padding:9px 12px;background:#eff7f1;margin-top:10px}@media(max-width:630px){.featurelist{grid-template-columns:1fr}}@media print{body{background:white}.actions{display:none}.panel{break-inside:avoid}}
+
+
+/* =====================================================================
+   EASY THEME SETTINGS — change the values below using GitHub's pencil.
+   CSS colour values use #RRGGBB. Changes affect ALL THREE generators.
+   ===================================================================== */
+:root {
+  --brand: #284968;           /* top banner and main buttons */
+  --accent-colour: #b57344;   /* vertical bar alongside question */
+  --page-background: #f6f8fb;
+  --card-background: #ffffff;
+  --body-text: #172e43;
+  --corner-rounding: 14px;
+  --content-width: 940px;
+  --base-font: 16px;
+  --font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+body {background:var(--page-background);color:var(--body-text);font-family:var(--font-family);font-size:var(--base-font)}
+.wrap {max-width:var(--content-width)}
+.head {background:var(--brand);border-radius:var(--corner-rounding)}
+.panel {background:var(--card-background);border-radius:var(--corner-rounding)}
+button:not(.secondary):not(.lucky) {background:var(--brand)}
+.question {border-left-color:var(--accent-colour)}
+.site-nav {display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.site-nav a {padding:9px 13px;text-decoration:none;border:1px solid var(--line);border-radius:9px;background:white;color:var(--ink);font-weight:700}
+.site-nav a[aria-current="page"] {background:var(--brand);border-color:var(--brand);color:white}
+.plan-link {background:#4c7457 !important}
+body[data-mode="question"] #planning-panel {display:none}
+body[data-mode="planning"] #reference-panel {display:none}
+body[data-mode="planning"] #question-panel .hint {display:none}
+@media print {.site-nav,.site-nav a,.plan-link{display:none}}
+/* Teacher review controls — edit colours above as usual */
+.rating-filter-row {display:grid;grid-template-columns:minmax(220px,1fr) 1fr;gap:12px;align-items:end;margin:0 0 16px}
+.rating-status {margin:10px 0 2px}.rating-pill{display:inline-block;background:#e8f2eb;color:#24533b;padding:5px 12px;border-radius:20px;font-size:.83rem;font-weight:700}
+.rating-error {background:#fff1ef;color:#8a2520;border:1px solid #efb6ae;border-radius:8px;padding:9px}
+.rating-success {color:#225b3a}.teacher-body{margin-top:14px}.login-form{max-width:420px;display:grid;gap:10px}
+.teacher-body input{font:inherit;padding:10px;border:1px solid #9eb1c0;border-radius:8px;width:100%}
+.review-fields{margin:12px 0}.review-fields .field:last-child{grid-column:1/-1}
+.review-question{border-left:4px solid var(--accent-colour);padding:12px;background:#faf6f1}
+.rating-search{width:100%;max-width:100%;margin-bottom:8px}.review-library{max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+button.review-item{display:flex;flex-direction:column;gap:4px;width:100%;text-align:left;background:white;color:var(--ink);border-radius:0;border-bottom:1px solid var(--line);font-weight:normal}
+button.review-item:hover{background:#f2f6fc}.review-item strong{font-size:.9rem}.review-item .smallnote{font-weight:normal}
+button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:630px){.rating-filter-row{grid-template-columns:1fr}}
+@media print{#teacher-panel,.rating-filter-row,.rating-status{display:none}}
+
+/* V6: compact, accessible accordion sections */
+.accordion{border:1px solid var(--line);background:var(--card-background);border-radius:var(--corner-rounding);margin-bottom:10px;overflow:hidden}
+.accordion-title{display:list-item;list-style-position:inside;padding:14px 17px;font-weight:750;cursor:pointer;background:#f0f4f8;color:var(--ink);font-size:1.04rem}
+.accordion[open]>.accordion-title{background:#e5edf6;border-bottom:1px solid var(--line)}
+.accordion-title:hover{background:#e3ecf6}
+.accordion-title:focus-visible{outline:3px solid #79a7cc;outline-offset:-3px}
+.accordion>.panel{margin:0;border:0;border-radius:0;padding:17px;background:var(--card-background)}
+.accordion>.panel>.rating-filter-row:first-child{margin-top:0}
+body[data-mode="question"] .accordion[data-panel="planning-panel"]{display:none}
+body[data-mode="planning"] .accordion[data-panel="reference-panel"]{display:none}
+@media print{.accordion{break-inside:avoid}.accordion>.panel{display:block} .accordion-title{background:white}}
+
+/* Version 7: teacher-editable instructional text */
+.teacher-custom-instructions{margin:0 0 16px;padding:12px 14px;border-left:4px solid var(--brand);background:#f1f5f9;border-radius:7px;line-height:1.55}
+.offline-label{font-size:.77rem!important;opacity:.85;margin-top:12px!important}
+[hidden]{display:none!important}
