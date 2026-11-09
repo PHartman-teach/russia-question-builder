@@ -8,11 +8,11 @@
    CSS colour values use #RRGGBB. Changes affect ALL THREE generators.
    ===================================================================== */
 :root {
-  --brand: #284968;           /* top banner and main buttons */
-  --accent-colour: #b57344;   /* vertical bar alongside question */
-  --page-background: #f6f8fb;
+  --brand: #8B1E24;           /* top banner and main buttons */
+  --accent-colour: #c69c6d;   /* vertical bar alongside question */
+  --page-background: #f8f5f1;
   --card-background: #ffffff;
-  --body-text: #172e43;
+  --body-text: #242424;
   --corner-rounding: 14px;
   --content-width: 940px;
   --base-font: 16px;
