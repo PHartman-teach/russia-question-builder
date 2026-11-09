@@ -3,11 +3,11 @@
 window.RUSSIA_CONTENT = {
   common: {
     toolNotice: "Aligned to the NSW Modern History Stage 6 (2017) syllabus. This website uses prewritten historical material and rule-based templates. It does not use live generative AI or search the internet to create questions or plans.",
-    questionInstructions: "Choose a 2017-syllabus Key Feature, factor and question type. Or select Feeling lucky? to generate a random question. Check the scope and historical accuracy before using it for essay practice.",
+    questionInstructions: "Choose a historical area, factor and question type. Key Features are optional. Or select Feeling lucky? to generate a random question. Check the scope and historical accuracy before using it for essay practice.",
     planningInstructions: "Compare three possible arguments. Use the examples as starting points, not verified quotations. Select and improve one plan using your own historical knowledge and sources.",
     validityCheck: "Check: Is the question historically accurate, within the syllabus, suitable for a 25-mark essay, and capable of supporting a sustained argument?",
     showTechnicalNotes: false,
-    showNavigation: true,
+    showNavigation: false,
     showHistoricalReference: true
   },
   pages: {
