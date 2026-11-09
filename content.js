@@ -8,7 +8,7 @@ window.RUSSIA_CONTENT = {
     validityCheck: "Check: Is the question historically accurate, within the syllabus, suitable for a 25-mark essay, and capable of supporting a sustained argument?",
     showTechnicalNotes: false,
     showNavigation: false,
-    showHistoricalReference: true
+    showHistoricalReference: false
   },
   pages: {
     "index.html": {

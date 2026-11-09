@@ -25,7 +25,7 @@
   const h=make('h2','', 'Teacher review and question ratings');
   const toggle=make('button','secondary','Teacher sign-in / reviews');toggle.type='button';
   const body=make('div','teacher-body');body.hidden=true;
-  tpanel.append(h,toggle,body);qpanel.insertAdjacentElement('afterend',tpanel);
+  tpanel.append(h,toggle,body);const main=document.querySelector('main.wrap');const footer=main?.querySelector('footer');if(main){main.insertBefore(tpanel,footer||null)}else{qpanel.insertAdjacentElement('afterend',tpanel);}
   toggle.addEventListener('click',()=>{body.hidden=!body.hidden;if(!body.hidden)renderTeacher()});
   const message=make('p','smallnote');
   function note(s,kind=''){message.textContent=s;message.className='smallnote '+kind;}
@@ -89,7 +89,7 @@
     else if(!loaded)statusBox.append(make('p','smallnote','Ratings unavailable; filtering is temporarily inactive.'));
     else if(!accept)statusBox.append(make('p','rating-error','This question is excluded by the selected filter. Choose another combination or press Feeling lucky?.'));
     else statusBox.append(mode(vis?visibilityLabels[vis]:'Unrated practice question'));
-    ['copyQ','planThis','copyPlans','printPlans','print'].forEach(id=>{if($(id))$(id).disabled=!accept});
+    ['copyQ','planThis','copyPlans'].forEach(id=>{if($(id))$(id).disabled=!accept});
     const result=$('result');if(result)result.textContent=accept?latestQuestion:'Question excluded by the selected filter. Choose another question.';
     const plans=$('plans');if(plans)plans.style.display=accept?'':'none';
     const past=$('pastmatch');if(past)past.style.display=accept?'':'none';

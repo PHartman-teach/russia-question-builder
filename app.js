@@ -169,8 +169,8 @@ $('secondFeature').addEventListener('change',()=>refreshSlots(true));
 $('topic').addEventListener('change',()=>refreshSlots(true));$('formula').addEventListener('change',()=>refreshSlots(true));['factor','outcome'].forEach(id=>$(id).addEventListener('change',()=>{syncPeriodToSelections();render()}));$('period').addEventListener('change',render);
 $('copyQ').addEventListener('click',()=>copyText(currentQuestion,$('copyQ')));
 $('copyPlans').addEventListener('click',()=>copyText(plainPlans,$('copyPlans')));
-$('printPlans').addEventListener('click',()=>window.print());
-$('print').addEventListener('click',()=>window.print());$('lucky').addEventListener('click',feelingLucky);
+
+$('lucky').addEventListener('click',feelingLucky);
 $('random').addEventListener('click',()=>{const a=areas[Number($('topic').value)],s=slots[formula()];if(s[0])$('factor').value=String(rnd($('factor').options.length));if(s[1])$('outcome').value=String(rnd($('outcome').options.length));syncPeriodToSelections();render()});setup();
 
 
