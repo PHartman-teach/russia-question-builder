@@ -98,7 +98,7 @@
   }
   window.addEventListener('russia-question-change',e=>{latestQuestion=e.detail.question;if(!manualReview){editingKey=keyOf(latestQuestion);editingText=latestQuestion;}applyStatus();});
   filter.addEventListener('change',()=>{autoTry=false;applyStatus()});
-  ['lucky','random'].forEach(id=>$(id)?.addEventListener('click',()=>{autoTry=true;attempts=0;},{capture:true}));
+  ['lucky','random','luckyTop','anotherTop','generateTop'].forEach(id=>$(id)?.addEventListener('click',()=>{if(!autoTry)attempts=0;autoTry=true;},{capture:true}));
   async function loadStatuses(show=true){if(!client)return;const {data,error}=await client.from('russia_question_statuses').select('question_key,visibility').limit(10000);if(error){loaded=false;if(show)statusBox.textContent='Ratings could not be loaded; filtering is temporarily inactive.';return;}cache.clear();for(const r of data)cache.set(r.question_key,r.visibility);loaded=true;applyStatus();}
   async function loadReviews(show=true){if(!client||!allowed)return;const {data,error}=await client.from('russia_question_reviews').select('*').order('updated_at',{ascending:false}).limit(10000);if(error){note('Could not load reviews: '+error.message,'rating-error');return;}savedReviews=data||[];if(show)renderTeacher();}
   async function refreshAuth(){if(!client)return;const {data}=await client.auth.getUser();user=data?.user||null;allowed=false;if(user){const {data:permitted,error}=await client.rpc('russia_is_teacher');allowed=!error&&permitted===true;}if(allowed){await loadReviews(false);}renderTeacher();applyStatus();}
