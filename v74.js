@@ -1,4 +1,4 @@
-/* Russia 2017 HSC Question Machine — v7.4 interface and question-quality improvements.
+/* Russia 2017 HSC Question Machine — v7.4.1 interface and question-quality improvements.
    No AI calls or live searches; uses local question and evidence banks. */
 (() => {
  'use strict';
@@ -7,6 +7,8 @@
  const planningOnly = location.pathname.split('/').pop()==='planning.html';
  const topText=$('top-question-text'), topMeta=$('top-question-source'), top=$('top-question');
  let sourceMode='generated', officialChoice=null, recent=[];
+ // The top panel displays the last explicitly generated/selected question, not unfinished option edits.
+ let committedQuestion='';
  const queryState={};
  const questionTypeMap={any:[],assess:['F2','F3'],evaluate:['F5'],extent:['F1','F7'],why:['F6'],successful:['F4'],how:['F8']};
  const directiveNames={any:'Any question type',assess:'Assess',evaluate:'Evaluate',extent:'To what extent',why:'Why / Account for',successful:'How successful',how:'How did / transformation'};
@@ -14,8 +16,8 @@
  const normText=s=>String(s||'').toLowerCase().replace(/[‘’]/g,"'").replace(/[‐‑–—−]/g,'-').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
  const select=(id,options)=>{const el=$(id);if(!el)return;el.replaceChildren();options.forEach(([v,s])=>{const o=document.createElement('option');o.value=String(v);o.textContent=s;el.append(o)});};
  function showQuestion(){
-   const inResult=$('result')?.textContent||'';
-   topText.textContent=inResult || 'Choose a question to begin.';
+   const inResult=committedQuestion;
+   topText.textContent=inResult || 'Choose your options below and press Generate from selections, or try Feeling lucky?';
    const filtered=inResult.includes('excluded by the selected filter');
    if(filtered){topMeta.textContent='This question is excluded by your teacher’s filter';}
    else if(sourceMode==='practice'){topMeta.textContent='Additional practice question · Not an official NESA examination question';}
@@ -25,7 +27,7 @@
    if($('planTop'))$('planTop').disabled=sourceMode!=='generated'||filtered;
    if($('planThis'))$('planThis').disabled=sourceMode!=='generated'||filtered;
  }
- function generated(){sourceMode='generated';officialChoice=null;showQuestion();}
+ function generated(){sourceMode='generated';officialChoice=null;committedQuestion=$('result')?.textContent||'';showQuestion();}
  function remember(){const s=$('result')?.textContent;if(s){recent.push(normText(s));recent=recent.slice(-12);}}
  function validate(text){
   if(!text || text.length<38 || text.length>260 || !/[?.]$/.test(text))return false;
@@ -97,13 +99,19 @@
   $('luckyTop')?.addEventListener('click',()=>constrainedGenerate('lucky'));
  }
  // Track changes to original result, including security filtering by ratings.js.
- const original=$('result');if(original){new MutationObserver(showQuestion).observe(original,{childList:true,characterData:true,subtree:true});}
- window.addEventListener('russia-question-change',()=>{if(sourceMode!=='official')showQuestion();});
+ const original=$('result');if(original){new MutationObserver(()=>{
+  // Teacher filtering can replace a published question with a blocked message.
+  const live=original.textContent||'';
+  if(committedQuestion && /excluded by the selected filter/i.test(live)){committedQuestion=live;showQuestion();}
+ }).observe(original,{childList:true,characterData:true,subtree:true});}
+ window.addEventListener('russia-question-change',()=>{
+  // Intentionally wait for Generate, Another like this, Feeling lucky, or Past HSC.
+ });
  // The original page's Feeling lucky? is still useful from the expanded options accordion.
  $('lucky')?.addEventListener('click',()=>{generated();remember()});
  $('random')?.addEventListener('click',()=>{generated();remember()});
  $('copyTop')?.addEventListener('click',()=>{
-  const text=original?.textContent||'';
+  const text=committedQuestion||'';
   if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).catch(()=>window.prompt('Copy question:',text));
   else window.prompt('Copy question:',text);
  });
@@ -131,7 +139,7 @@
     &&($('historySource').value==='all'||item.kind===$('historySource').value);}
   const bank=[...officialBank.map(q=>({...q,kind:'official'})),...additions.map(q=>({...q,kind:'practice',year:q.year||null}))];
   function showOfficial(entry){
-   sourceMode='official';officialChoice=entry;
+   sourceMode='official';officialChoice=entry;committedQuestion=entry.text;
    currentQuestion=entry.text;$('result').textContent=entry.text;
    const box=$('pastmatch');box.replaceChildren();const p=document.createElement('p');p.textContent=`Original ${entry.year} NESA HSC examination question. ${entry.year>=2019?'2017 syllabus':'Earlier syllabus'}.`;box.append(p);
    if($('plans'))$('plans').style.display='none';
@@ -151,8 +159,8 @@
   function renderLibrary(){
    const results=$('historyResults');results.replaceChildren();const entries=bank.filter(matchesFilters).sort((a,b)=>(b.year||0)-(a.year||0));
    if(!entries.length){const p=document.createElement('p');p.className='smallnote';p.textContent=$('historySource').value==='practice'?'No additional practice questions are included yet. Add verified examples to extra-questions.js.':'No questions match the selected filters.';results.append(p);return;}
-   for(const e of entries){const card=document.createElement('article');card.className='history-item';const tag=document.createElement('div');tag.className='source';tag.textContent=e.kind==='official'?`OFFICIAL HSC · ${e.year} · ${e.year>=2019?'2017 syllabus':'earlier syllabus'}`:`ADDITIONAL PRACTICE · ${e.source||'source unspecified'}${e.year?' · '+e.year:''}`;
-    const q=document.createElement('p');q.textContent=e.text;const act=document.createElement('button');act.type='button';act.textContent=e.kind==='official'?'Use this past HSC question':'Use this practice question';act.addEventListener('click',()=>{if(e.kind==='official')showOfficial(e);else{sourceMode='practice';officialChoice=null;currentQuestion=e.text;$('result').textContent=e.text;window.dispatchEvent(new CustomEvent('russia-question-change',{detail:{question:e.text}}));showQuestion();} });card.append(tag,q,act);results.append(card);
+   for(const e of entries){const card=document.createElement('article');card.className='history-item';const tag=document.createElement('div');tag.className='source';tag.textContent=e.kind==='official'?`OFFICIAL HSC · ${e.year} · ${e.year>=2019?'2017 syllabus':'earlier syllabus'}`:`ADDITIONAL PRACTICE · ${(e.sources&&e.sources.length?e.sources.map(s=>s.source+(s.year?' · '+s.year:'' )).join(' / '):(e.source||'source unspecified')+(e.year?' · '+e.year:''))}`;
+    const q=document.createElement('p');q.textContent=e.text;const act=document.createElement('button');act.type='button';act.textContent=e.kind==='official'?'Use this past HSC question':'Use this practice question';act.addEventListener('click',()=>{if(e.kind==='official')showOfficial(e);else{sourceMode='practice';officialChoice=null;committedQuestion=e.text;currentQuestion=e.text;$('result').textContent=e.text;window.dispatchEvent(new CustomEvent('russia-question-change',{detail:{question:e.text}}));showQuestion();} });card.append(tag,q,act);results.append(card);
    }
   }
   ['historyArea','historyFeature','historyDirective','historySource'].forEach(id=>$(id).addEventListener('change',renderLibrary));
